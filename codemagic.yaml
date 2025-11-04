@@ -1,0 +1,21 @@
+workflows:
+  lotto-app-workflow:
+    name: Lotto App Build
+    environment:
+      groups:
+        - google_play
+      vars:
+        BUNDLE_ID: "com.lottoapp.neustart"
+    scripts:
+      - name: Flutter Analyze
+        script: |
+          flutter analyze
+      - name: Build APK
+        script: |
+          flutter build apk --release --target-platform android-arm,android-arm64
+    artifacts:
+      - build/app/outputs/flutter-apk/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - user@example.com
