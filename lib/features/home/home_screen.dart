@@ -1,4 +1,3 @@
-import '../../widgets/custom_system_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/services/lottery_service.dart';
@@ -7,6 +6,7 @@ import '../../core/services/theme_service.dart';
 import '../../core/models/lottery_model.dart';
 import '../../widgets/tipp_sheet.dart';
 import '../../widgets/custom_generator_dialog.dart';
+import '../../widgets/custom_system_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -88,6 +88,24 @@ class _HomeScreenState extends State<HomeScreen> {
             child: const Text('Abbrechen'),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showCustomSystemDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => CustomSystemDialog(
+        onSystemCreated: (customSystem) {
+          setState(() {
+            _currentSystem = customSystem;
+            _currentTip = [];
+            _showTippSheet = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('System "${customSystem.name}" erstellt')),
+          );
+        },
       ),
     );
   }
@@ -188,24 +206,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 10),
                 
                 OutlinedButton(
-                const SizedBox(height: 10),
-                OutlinedButton(
-                  onPressed: _showCustomSystemDialog,
-                  child: const Text('Eigenes System erstellen'),
-                ),
                   onPressed: _showCustomGenerator,
                   child: const Text('Individueller Generator'),
                 ),
                 const SizedBox(height: 10),
                 
                 OutlinedButton(
+                  onPressed: _analyzeCustomNumbers,
+                  child: const Text('Eigene Zahlen analysieren'),
+                ),
                 const SizedBox(height: 10),
+                
                 OutlinedButton(
                   onPressed: _showCustomSystemDialog,
                   child: const Text('Eigenes System erstellen'),
-                ),
-                  onPressed: _analyzeCustomNumbers,
-                  child: const Text('Eigene Zahlen analysieren'),
                 ),
                 
                 const SizedBox(height: 20),
@@ -226,21 +240,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-  void _showCustomSystemDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => CustomSystemDialog(
-        onSystemCreated: (customSystem) {
-          setState(() {
-            _currentSystem = customSystem;
-            _currentTip = [];
-            _showTippSheet = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('System "${customSystem.name}" erstellt')),
-          );
-        },
-      ),
-    );
-  }
