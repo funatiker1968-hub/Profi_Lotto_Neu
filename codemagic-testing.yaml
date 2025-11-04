@@ -1,0 +1,32 @@
+workflows:
+  lotto-app-testing:
+    name: Lotto App Testing
+    environment:
+      groups: []
+      vars:
+        APP_NAME: "Lotto App Testing"
+    scripts:
+      - name: Flutter Version
+        script: |
+          flutter --version
+      - name: Flutter Analyze
+        script: |
+          flutter analyze
+      - name: Flutter Tests
+        script: |
+          flutter test
+      - name: Build APK (Debug)
+        script: |
+          flutter build apk --debug
+      - name: Build APK (Release)
+        script: |
+          flutter build apk --release --split-per-abi
+    artifacts:
+      - build/app/outputs/flutter-apk/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - user@example.com  # HIER IHRE EMAIL FÜR TEST-BENACHRICHTIGUNGEN
+        notify:
+          success: true
+          failure: true

@@ -7,7 +7,11 @@ workflows:
       vars:
         BUNDLE_ID: "com.lottoapp.neustart"
         APP_NAME: "Lotto App Neustart"
+        BUILD_NUMBER: 1
     scripts:
+      - name: Flutter Version
+        script: |
+          flutter --version
       - name: Flutter Analyze
         script: |
           flutter analyze
@@ -26,11 +30,10 @@ workflows:
     publishing:
       email:
         recipients:
-          - user@example.com  # Hier deine Email eintragen
+          - user@example.com  # HIER IHRE EMAIL EINTRAGEN
         notify:
           success: true
           failure: true
       google_play:
         credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
         track: internal
-        rollout: 0.5
