@@ -1,21 +1,36 @@
 workflows:
-  lotto-app-workflow:
-    name: Lotto App Build
+  lotto-app-android:
+    name: Lotto App Android
     environment:
       groups:
-        - google_play
+        - android_credentials
       vars:
         BUNDLE_ID: "com.lottoapp.neustart"
+        APP_NAME: "Lotto App Neustart"
     scripts:
       - name: Flutter Analyze
         script: |
           flutter analyze
+      - name: Flutter Tests
+        script: |
+          flutter test
       - name: Build APK
         script: |
           flutter build apk --release --target-platform android-arm,android-arm64
+      - name: Build AppBundle
+        script: |
+          flutter build appbundle --release
     artifacts:
       - build/app/outputs/flutter-apk/**/*.apk
+      - build/app/outputs/bundle/**/*.aab
     publishing:
       email:
         recipients:
-          - user@example.com
+          - user@example.com  # Hier deine Email eintragen
+        notify:
+          success: true
+          failure: true
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        rollout: 0.5

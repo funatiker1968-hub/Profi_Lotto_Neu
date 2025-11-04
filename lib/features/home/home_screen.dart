@@ -1,3 +1,4 @@
+import '../../widgets/custom_system_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/services/lottery_service.dart';
@@ -187,12 +188,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 10),
                 
                 OutlinedButton(
+                const SizedBox(height: 10),
+                OutlinedButton(
+                  onPressed: _showCustomSystemDialog,
+                  child: const Text('Eigenes System erstellen'),
+                ),
                   onPressed: _showCustomGenerator,
                   child: const Text('Individueller Generator'),
                 ),
                 const SizedBox(height: 10),
                 
                 OutlinedButton(
+                const SizedBox(height: 10),
+                OutlinedButton(
+                  onPressed: _showCustomSystemDialog,
+                  child: const Text('Eigenes System erstellen'),
+                ),
                   onPressed: _analyzeCustomNumbers,
                   child: const Text('Eigene Zahlen analysieren'),
                 ),
@@ -215,3 +226,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+  void _showCustomSystemDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => CustomSystemDialog(
+        onSystemCreated: (customSystem) {
+          setState(() {
+            _currentSystem = customSystem;
+            _currentTip = [];
+            _showTippSheet = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('System "${customSystem.name}" erstellt')),
+          );
+        },
+      ),
+    );
+  }
