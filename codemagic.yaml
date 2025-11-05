@@ -2,12 +2,8 @@ workflows:
   lotto-app-android:
     name: Lotto App Android
     environment:
-      groups:
-        - android_credentials
       vars:
-        BUNDLE_ID: "com.lottoapp.neustart"
         APP_NAME: "Lotto App Neustart"
-        BUILD_NUMBER: 1
     scripts:
       - name: Flutter Version
         script: |
@@ -30,10 +26,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - user@example.com  # HIER IHRE EMAIL EINTRAGEN
+          - user@example.com  # OPTIONAL: Ihre Email für Benachrichtigungen
         notify:
           success: true
           failure: true
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal
